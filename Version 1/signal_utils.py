@@ -1,11 +1,3 @@
-"""
-signal_utils.py
-----------------
-Pure signal-processing functions used by the stress-scan app.
-Kept separate from the camera loop so they can be unit-tested
-without needing a webcam.
-"""
-
 import collections
 import numpy as np
 from scipy import signal as sps
