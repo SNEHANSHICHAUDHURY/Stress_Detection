@@ -1,14 +1,3 @@
-"""
-test_edge_cases.py
--------------------
-Targeted tests for the four robustness requirements:
-  1. Short/insufficient signal handling (no crashes, no bogus output)
-  2. Extreme/out-of-range HR bound checking
-  3. PERCLOS + microsleep vs normal-blink differentiation
-  4. Lighting-drift robustness of the POS + bandpass pipeline
-
-Run: python3 test_edge_cases.py
-"""
 
 import numpy as np
 from signal_utils import (
