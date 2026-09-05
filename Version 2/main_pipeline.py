@@ -7,6 +7,8 @@ import mediapipe as mp
 import sounddevice as sd
 import threading
 import random
+import csv
+from datetime import datetime
 from google import genai
 from google.genai import types 
 
@@ -304,6 +306,50 @@ def fuse_multimodal_scores(baseline, voice, stage2_blink_rate):
         "behavior_subscore": round(float(s_behavior), 1)
     }
 
+def log_version2_results(baseline, voice, s2_blinks, overall_score, subscores, filename="version2_stress_log.csv"):
+    file_exists = os.path.isfile(filename)
+    
+    headers = [
+        "timestamp",
+        "hr_bpm",
+        "rmssd_ms",
+        "baseline_blink_rate",
+        "brow_ratio",
+        "head_jitter",
+        "pitch_mean_hz",
+        "pitch_std_hz",
+        "speech_blink_rate",
+        "hrv_subscore",
+        "voice_subscore",
+        "behavior_subscore",
+        "overall_stress_index"
+    ]
+    
+    row = [
+        datetime.now().strftime("%Y-%m-%d %H:%M:%S"),
+        round(float(baseline["hr_bpm"]), 2),
+        round(float(baseline["rmssd_ms"]), 2),
+        round(float(baseline["blink_rate"]), 2),
+        round(float(baseline["brow_ratio"]), 4),
+        round(float(baseline["head_jitter"]), 4),
+        round(float(voice["pitch_mean_hz"]), 2),
+        round(float(voice["pitch_std_hz"]), 2),
+        round(float(s2_blinks), 2),
+        round(float(subscores["hrv_subscore"]), 2),
+        round(float(subscores["voice_subscore"]), 2),
+        round(float(subscores["behavior_subscore"]), 2),
+        round(float(overall_score), 2)
+    ]
+    
+    with open(filename, mode="a", newline="", encoding="utf-8") as f:
+        writer = csv.writer(f)
+        if not file_exists:
+            writer.writerow(headers)
+        writer.writerow(row)
+        
+    print(f"[SAVED] Results successfully appended to {filename}\n")
+
+
 
 # ---------------------------------------------------------
 # Main Execution Flow
@@ -370,6 +416,7 @@ def main():
     else:
         print(" CLINICAL STATUS                   : HIGH ACUTE STRAIN")
     print("="*55 + "\n")
+    log_version2_results(baseline, voice_results, s2_blinks, overall_score, subscores)
 
 if __name__ == "__main__":
     main()
