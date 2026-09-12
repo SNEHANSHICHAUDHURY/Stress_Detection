@@ -1,2 +1,0 @@
-timestamp,hr_bpm,rmssd_ms,baseline_blink_rate,brow_ratio,head_jitter,pitch_mean_hz,pitch_std_hz,speech_blink_rate,hrv_subscore,voice_subscore,behavior_subscore,overall_stress_index
-2026-09-05 12:08:06,70.2,150.0,24.0,0.2204,31.2213,128.5,11.3,25.75,0.0,40.0,39.2,23.7
